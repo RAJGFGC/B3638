@@ -1,6 +1,35 @@
 body {
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 3fr 1fr;
+    grid-template-rows: 1fr 3fr 1fr;
+    grid-template-areas: 
+    "one one"
+    "two two1"
+    "three three";
+    gap: 10px;
+    /* justify-items: center;
+    align-items: center; */
+    /* place-items: center; */
+}
+
+header {
+    grid-area: one;
+}
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    grid-area: two;
+    /* justify-self: center;
+    align-self: center; */
+    /* place-self: center; */
+}
+aside {
+    grid-area: two1;
+}
+footer {
+    grid-area: three;
 }
 
 body > * {

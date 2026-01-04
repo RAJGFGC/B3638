@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tailwind CSS Grid Explained</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="bg-gray-100 p-6 space-y-10 text-sm">
+    <!-- TITLE -->
+    <h1 class="text-2xl font-bold text-center">
+      Tailwind CSS – Grid Explained Visually
+    </h1>
+
+    <!-- 1. BASIC GRID -->
+    <section>
+      <h2 class="font-bold mb-2">1️⃣ Basic grid (3 columns)</h2>
+      <div class="grid grid-cols-3 border p-3 bg-white gap-2">
+        <div class="bg-blue-300 p-4">1</div>
+        <div class="bg-green-300 p-4">2</div>
+        <div class="bg-red-300 p-4">3</div>
+        <div class="bg-yellow-300 p-4">4</div>
+        <div class="bg-purple-300 p-4">5</div>
+        <div class="bg-pink-300 p-4">6</div>
+      </div>
+    </section>
+
+    <!-- 2. GRID ROWS -->
+    <section>
+      <h2 class="font-bold mb-2">2️⃣ grid-rows-2</h2>
+      <div class="grid grid-cols-3 grid-rows-2 border p-3 bg-white gap-2">
+        <div class="bg-blue-300 p-4">1</div>
+        <div class="bg-green-300 p-4">2</div>
+        <div class="bg-red-300 p-4">3</div>
+        <div class="bg-yellow-300 p-4">4</div>
+        <div class="bg-purple-300 p-4">5</div>
+        <div class="bg-pink-300 p-4">6</div>
+      </div>
+    </section>
+
+    <!-- 3. GAP -->
+    <section>
+      <h2 class="font-bold mb-2">3️⃣ gap-6 (spacing between cells)</h2>
+      <div class="grid grid-cols-4 gap-6 border p-3 bg-white">
+        <div class="bg-blue-300 p-4">A</div>
+        <div class="bg-green-300 p-4">B</div>
+        <div class="bg-red-300 p-4">C</div>
+        <div class="bg-yellow-300 p-4">D</div>
+      </div>
+    </section>
+
+    <!-- 4. COLUMN SPAN -->
+    <section>
+      <h2 class="font-bold mb-2">4️⃣ col-span</h2>
+      <div class="grid grid-cols-4 gap-2 border p-3 bg-white">
+        <div class="bg-blue-300 p-4 col-span-2">col-span-2</div>
+        <div class="bg-green-300 p-4">1</div>
+        <div class="bg-red-300 p-4">2</div>
+      </div>
+    </section>
+
+    <!-- 5. ROW SPAN -->
+    <section>
+      <h2 class="font-bold mb-2">5️⃣ row-span</h2>
+      <div class="grid grid-cols-3 grid-rows-3 gap-2 border p-3 bg-white">
+        <div class="bg-blue-300 p-4 row-span-2">row-span-2</div>
+        <div class="bg-green-300 p-4">2</div>
+        <div class="bg-red-300 p-4">3</div>
+        <div class="bg-yellow-300 p-4">4</div>
+        <div class="bg-purple-300 p-4">5</div>
+      </div>
+    </section>
+
+    <!-- 6. PLACE ITEMS -->
+    <section>
+      <h2 class="font-bold mb-2">6️⃣ place-items-center</h2>
+      <div class="grid place-items-center h-40 border bg-white">
+        <div class="bg-blue-500 text-white p-6 rounded">Perfect Center</div>
+      </div>
+    </section>
+
+    <!-- 7. IMAGE GALLERY -->
+    <section>
+      <h2 class="font-bold mb-2">7️⃣ Image / Card Gallery Layout</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 border p-3 bg-white">
+        <div class="bg-blue-300 h-24 flex items-center justify-center">1</div>
+        <div class="bg-green-300 h-24 flex items-center justify-center">2</div>
+        <div class="bg-red-300 h-24 flex items-center justify-center">3</div>
+        <div class="bg-yellow-300 h-24 flex items-center justify-center">4</div>
+      </div>
+    </section>
+
+    <!-- 8. DASHBOARD -->
+    <section>
+      <h2 class="font-bold mb-2">8️⃣ Dashboard Layout</h2>
+      <div class="grid grid-cols-4 gap-3 bg-white border p-3">
+        <div class="bg-blue-300 p-4 col-span-4">Header</div>
+        <div class="bg-gray-300 p-4 col-span-1">Sidebar</div>
+        <div class="bg-green-300 p-4 col-span-3">Main Content</div>
+      </div>
+    </section>
+
+    <!-- 9. PAGE LAYOUT -->
+    <section>
+      <h2 class="font-bold mb-2">9️⃣ Complete Page Layout</h2>
+      <div class="grid grid-cols-4 grid-rows-3 gap-2 h-64 bg-white border p-3">
+        <div class="bg-blue-300 col-span-4">Navbar</div>
+        <div class="bg-gray-300 row-span-2">Sidebar</div>
+        <div class="bg-green-300 col-span-3 row-span-2">Content</div>
+        <div class="bg-yellow-300 col-span-4">Footer</div>
+      </div>
+    </section>
+  </body>
+</html>
