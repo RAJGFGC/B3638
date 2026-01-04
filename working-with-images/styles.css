@@ -1,0 +1,28 @@
+#guvi {
+    background-image: url("img/logo.svg");
+    width: 300px;
+    height: 200px;
+    border: 10px solid lightblue;
+    padding: 10px;
+    background-size: contain;
+    background-repeat: no-repeat;
+} 
+
+.logo {
+    width: 200px;
+    height: 200px;
+  
+    background-image: url("img/logo.svg");
+    background-size: 400px 200px; /* full sprite size */
+    background-repeat: no-repeat;
+  }
+  
+  /* React logo (LEFT side) */
+  .react {
+    background-position: 0 0;
+  }
+  
+  /* Node.js logo (RIGHT side) */
+  .node {
+    background-position: -200px 0;
+  }
