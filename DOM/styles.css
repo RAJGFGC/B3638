@@ -1,0 +1,16 @@
+.blue {
+    color: blue;
+}
+
+.big {
+    font-size: 2em;
+}
+
+#scrollable {
+    background-color: lightseagreen;
+    height: 70px;
+    padding: 10px;
+    border: 5px solid black;
+    margin: 1em;
+    overflow: auto;
+}
