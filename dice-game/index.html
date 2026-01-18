@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dice Game</title>
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="bg-slate-900 text-white min-h-screen flex items-center justify-center p-4"
+  >
+    <div class="w-full max-w-md bg-slate-800 rounded-2xl p-6 shadow-lg">
+      <h1 class="text-3xl font-bold text-center">🎲 Dice Game</h1>
+      <p class="text-center text-slate-300 mt-2">
+        Roll the dice. Get 7+ to win!
+      </p>
+
+      <!-- Dice Display -->
+      <div class="mt-6 flex items-center justify-center gap-6">
+        <div class="text-center">
+          <div id="dice1" class="text-6xl">🎲</div>
+          <p class="text-slate-300 mt-2">Dice 1</p>
+        </div>
+
+        <div class="text-center">
+          <div id="dice2" class="text-6xl">🎲</div>
+          <p class="text-slate-300 mt-2">Dice 2</p>
+        </div>
+      </div>
+
+      <!-- Score Area -->
+      <div class="mt-6 bg-slate-700 rounded-xl p-4">
+        <p class="text-lg">
+          Total: <span id="total" class="font-bold">0</span>
+        </p>
+        <p class="text-lg mt-1">
+          Attempts: <span id="attempts" class="font-bold">0</span>
+        </p>
+        <p class="text-lg mt-1">
+          Wins: <span id="wins" class="font-bold">0</span>
+        </p>
+        <p class="text-lg mt-1">
+          Losses: <span id="losses" class="font-bold">0</span>
+        </p>
+        <p class="text-lg mt-1">
+          Best Score: <span id="best" class="font-bold">0</span>
+        </p>
+      </div>
+
+      <!-- Message -->
+      <div id="message" class="mt-4 text-center text-xl font-semibold">
+        Click ROLL to start!
+      </div>
+
+      <!-- Buttons -->
+      <div class="mt-6 flex gap-3">
+        <button
+          id="rollBtn"
+          class="flex-1 bg-green-500 hover:bg-green-600 active:scale-95 transition rounded-xl py-3 font-bold"
+        >
+          🎲 ROLL
+        </button>
+
+        <button
+          id="resetBtn"
+          class="flex-1 bg-red-500 hover:bg-red-600 active:scale-95 transition rounded-xl py-3 font-bold"
+        >
+          🔄 RESET
+        </button>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
