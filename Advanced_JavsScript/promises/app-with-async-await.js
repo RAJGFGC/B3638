@@ -1,11 +1,7 @@
 function getUser() {
   return new Promise(function (resolve, reject) {
     setTimeout(function () {
-      try {
-        resolve({ userId: 1, username: "john_doe" });
-      } catch (error) {
-        reject("Failed to get user", error);
-      }
+      resolve({ userId: 1, username: "john_doe" });
     }, 5000);
   });
 }
@@ -26,20 +22,17 @@ function getPaymentStatus(orderId) {
   });
 }
 
-console.log("=== PROMISE .then() VERSION ===");
-
-getUser()
-  .then(function (user) {
+async function processOrder() {
+  try {
+    const user = await getUser();
     console.log("User:", user);
-    return getOrders(user.userId);
-  })
-  .then(function (orders) {
+
+    const orders = await getOrders(user.userId);
     console.log("Orders:", orders);
-    return getPaymentStatus(orders[0].orderId);
-  })
-  .then(function (paymentStatus) {
+
+    const paymentStatus = await getPaymentStatus(orders[0].orderId);
     console.log("Payment Status:", paymentStatus);
-  })
-  .catch(function (error) {
-    console.error("Error:", error);
-  });
+  } catch (error) {
+    console.error("Error processing order:", error);
+  }
+}
