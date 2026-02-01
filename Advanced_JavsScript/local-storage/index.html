@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Magic Website</title>
+  </head>
+  <body>
+    <h1>Hello Friend!!</h1>
+
+    <p>What is your name?</p>
+    <input type="text" id="nameInput" placeholder="Enter your name" />
+    <button id="saveButton" onclick="saveName()">Save Name</button>
+    <button id="deleteButton" onclick="deleteName()">Delete Name</button>
+
+    <h2 id="message"></h2>
+    <script>
+      var savedName = localStorage.getItem("myName");
+
+      if (savedName) {
+        document.getElementById(
+          "message"
+        ).innerText = `WELCOME BACK! 😊 ${savedName}.`;
+      }
+
+      function saveName() {
+        var name = document.getElementById("nameInput").value;
+        localStorage.setItem("myName", name);
+        document.getElementById(
+          "message"
+        ).innerText = `😊 I will remember you, ${name}!`;
+      }
+
+      function deleteName() {
+        localStorage.removeItem("myName");
+        document.getElementById(
+          "message"
+        ).innerText = `Your name has been deleted.`;
+      }
+    </script>
+  </body>
+</html>
