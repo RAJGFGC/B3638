@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Post + Dynamic Comments</title>
+    <style>
+      :root {
+        --bg: #f0f2f5;
+        --card: #ffffff;
+        --text: #1c1e21;
+        --muted: #65676b;
+        --line: #e4e6eb;
+        --blue: #1877f2;
+        --chip: #f2f3f5;
+        --shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.06);
+        --radius: 12px;
+        --font:
+          system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
+          sans-serif;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        font-family: var(--font);
+        color: var(--text);
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 28px 14px;
+      }
+
+      .post {
+        width: min(680px, 100%);
+        background: var(--card);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        border: 1px solid rgba(0, 0, 0, 0.04);
+      }
+
+      /* Header */
+      .post__header {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 14px 16px 8px;
+      }
+      .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #f7b733, #fc4a1a);
+        flex: 0 0 auto;
+        position: relative;
+        overflow: hidden;
+      }
+      .avatar::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(
+            circle at 30% 30%,
+            rgba(255, 255, 255, 0.5),
+            transparent 45%
+          ),
+          radial-gradient(
+            circle at 70% 80%,
+            rgba(255, 255, 255, 0.35),
+            transparent 55%
+          );
+        opacity: 0.8;
+      }
+      .hdr__meta {
+        flex: 1;
+        min-width: 0;
+      }
+      .name {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-top: 2px;
+      }
+      .verified {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: var(--blue);
+        display: inline-grid;
+        place-items: center;
+        color: #fff;
+        font-size: 11px;
+        font-weight: 900;
+      }
+      .sub {
+        color: var(--muted);
+        font-size: 13px;
+        margin-top: 2px;
+      }
+      .dots {
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+        color: var(--muted);
+        cursor: pointer;
+      }
+      .dots:hover {
+        background: var(--chip);
+      }
+
+      /* Text */
+      .post__text {
+        padding: 0 16px 12px;
+        font-size: 15px;
+        line-height: 1.35;
+      }
+      .post__text a {
+        color: var(--blue);
+        text-decoration: none;
+      }
+      .post__text a:hover {
+        text-decoration: underline;
+      }
+
+      /* Media */
+      .media {
+        width: 100%;
+        aspect-ratio: 16/10;
+        background:
+          radial-gradient(
+            circle at 20% 25%,
+            rgba(255, 255, 255, 0.35),
+            transparent 40%
+          ),
+          linear-gradient(135deg, #6dd5ed, #2193b0);
+        position: relative;
+      }
+      .media__emoji {
+        position: absolute;
+        inset: auto 14px 14px auto;
+        background: rgba(255, 255, 255, 0.92);
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-size: 13px;
+        color: var(--muted);
+        border: 1px solid rgba(0, 0, 0, 0.06);
+      }
+
+      /* Reactions summary */
+      .summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 16px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .summary__left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
+      }
+      .react {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .react__icons {
+        display: flex;
+      }
+      .icon {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        margin-left: -6px;
+        display: grid;
+        place-items: center;
+        font-size: 11px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+      }
+      .icon:first-child {
+        margin-left: 0;
+      }
+      .icon.like {
+        background: #1877f2;
+        color: #fff;
+      }
+      .icon.love {
+        background: #f02849;
+        color: #fff;
+      }
+      .icon.care {
+        background: #f7b125;
+        color: #111;
+      }
+
+      .summary__right {
+        display: flex;
+        gap: 12px;
+        white-space: nowrap;
+      }
+
+      /* Actions */
+      .actions {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        padding: 6px 12px 10px;
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+      .btn {
+        border: 0;
+        background: transparent;
+        padding: 8px 10px;
+        border-radius: 10px;
+        cursor: pointer;
+        color: var(--muted);
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-size: 14px;
+      }
+      .btn:hover {
+        background: var(--chip);
+      }
+      .btn svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      /* Comments */
+      .comments {
+        padding: 12px 16px 16px;
+      }
+      .comments__top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--muted);
+        font-size: 13px;
+        margin-bottom: 10px;
+      }
+      .view-more {
+        color: var(--muted);
+        font-weight: 600;
+        cursor: pointer;
+        user-select: none;
+      }
+      .view-more:hover {
+        text-decoration: underline;
+      }
+
+      .comment-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 8px;
+      }
+      .c {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+      }
+      .c__avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #d9a7c7, #fffcdc);
+        flex: 0 0 auto;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+      }
+      .c__bubble {
+        background: var(--chip);
+        border-radius: 18px;
+        padding: 8px 12px;
+        max-width: calc(100% - 42px);
+      }
+      .c__name {
+        font-weight: 700;
+        font-size: 13px;
+        margin-bottom: 2px;
+      }
+      .c__text {
+        font-size: 14px;
+        line-height: 1.3;
+        word-wrap: break-word;
+      }
+      .c__meta {
+        margin-left: 44px;
+        color: var(--muted);
+        font-size: 12px;
+        display: flex;
+        gap: 14px;
+        margin-top: 4px;
+      }
+      .c__meta span {
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .c__meta span:hover {
+        text-decoration: underline;
+      }
+
+      /* Add comment */
+      .add {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin-top: 14px;
+      }
+      .add .me {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #56ab2f, #a8e063);
+        border: 1px solid rgba(0, 0, 0, 0.06);
+      }
+      .input-wrap {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: var(--chip);
+        border-radius: 999px;
+        padding: 10px 12px;
+        border: 1px solid rgba(0, 0, 0, 0.04);
+      }
+      input {
+        border: 0;
+        outline: none;
+        background: transparent;
+        width: 100%;
+        font-size: 14px;
+      }
+      .send {
+        border: 0;
+        background: transparent;
+        color: var(--blue);
+        font-weight: 800;
+        cursor: pointer;
+        padding: 6px 10px;
+        border-radius: 999px;
+      }
+      .send:hover {
+        background: #e7f3ff;
+      }
+      .hidden {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <article class="post" id="post">
+      <!-- Header -->
+      <header class="post__header">
+        <div class="avatar" aria-hidden="true"></div>
+        <div class="hdr__meta">
+          <div class="name">Orange Juice <span class="verified">✓</span></div>
+          <div class="sub">18 January 2022 · Public</div>
+        </div>
+        <div class="dots" title="More">⋯</div>
+      </header>
+
+      <!-- Text -->
+      <div class="post__text">
+        Fresh & juicy vibes 🍊❄️ — staying hydrated the tasty way.
+        <a href="#">#food</a>
+      </div>
+
+      <!-- Media -->
+      <div class="media" role="img" aria-label="Post image">
+        <div class="media__emoji">🍊 + 🧊</div>
+      </div>
+
+      <!-- Summary -->
+      <section class="summary">
+        <div class="summary__left">
+          <div class="react">
+            <div class="react__icons">
+              <div class="icon like">👍</div>
+              <div class="icon love">❤</div>
+              <div class="icon care">😊</div>
+            </div>
+            <div id="likeText">Juliane Gray, Nasi Her and 2K others</div>
+          </div>
+        </div>
+        <div class="summary__right">
+          <div><span id="commentCount">0</span> Comments</div>
+          <div><span id="shareCount">2</span> Shares</div>
+        </div>
+      </section>
+
+      <!-- Actions -->
+      <section class="actions">
+        <button class="btn" id="likeBtn" type="button" aria-label="Like">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+          >
+            <path
+              d="M14 9V5a3 3 0 0 0-3-3l-3 7v13h10a3 3 0 0 0 3-3v-7a3 3 0 0 0-3-3h-4z"
+            />
+            <path d="M7 9H4v13h3" />
+          </svg>
+          Like
+        </button>
+        <button
+          class="btn"
+          id="focusCommentBtn"
+          type="button"
+          aria-label="Comment"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+          >
+            <path
+              d="M21 15a4 4 0 0 1-4 4H7l-4 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"
+            />
+          </svg>
+          Comment
+        </button>
+        <button class="btn" type="button" aria-label="Share">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+          >
+            <path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7" />
+            <path d="M16 6l-4-4-4 4" />
+            <path d="M12 2v14" />
+          </svg>
+          Share
+        </button>
+      </section>
+
+      <!-- Comments -->
+      <section class="comments">
+        <div class="comments__top">
+          <div>Most relevant</div>
+          <div class="view-more" id="viewMore">View 20 more comments</div>
+        </div>
+
+        <div class="comment-list" id="commentList"></div>
+
+        <div class="add">
+          <div class="me" aria-hidden="true"></div>
+          <div class="input-wrap">
+            <input
+              id="commentInput"
+              type="text"
+              placeholder="Write a comment..."
+            />
+            <button class="send" id="sendBtn" type="button">Post</button>
+          </div>
+        </div>
+      </section>
+    </article>
+
+    <script>
+      // --------- Fake dynamic data ----------
+      const names = [
+        "Arun",
+        "Priya",
+        "Karthik",
+        "Divya",
+        "Vishnu",
+        "Meena",
+        "Rahul",
+        "Anitha",
+        "Sathish",
+        "Keerthi",
+        "Gokul",
+        "Manisha",
+        "Varsha",
+        "Kannan",
+        "Tamil",
+        "Dhananjay",
+        "Praveen",
+        "Himanshu",
+        "Vinithaa",
+        "Roselin",
+        "Ruthesh",
+        "Prashanthi",
+        "Shashank",
+        "Mahabeer",
+        "Ajay",
+        "Suyash",
+      ];
+
+      const texts = [
+        "This looks super refreshing 🔥",
+        "Orange + ice = perfect combo!",
+        "Nice shot! So clean 😍",
+        "Now I’m craving juice 😄",
+        "That color palette is 💯",
+        "Chennai heat ku idhu best 😅",
+        "Simple and beautiful design.",
+        "Where did you get this idea?",
+        "Feeling hydrated just by seeing this 😂",
+        "Give recipe pls!",
+        "Amazing vibe 🍊",
+        "That looks premium!",
+      ];
+
+      function rand(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+      }
+
+      // Create 200 different comments (unique by id)
+      const ALL_COMMENTS = Array.from({ length: 200 }, (_, i) => {
+        const mins = 1 + (i % 59);
+        return {
+          id: i + 1,
+          name: rand(names),
+          text: rand(texts) + (i % 7 === 0 ? " #food" : ""),
+          time: `${mins}m`,
+          likes: Math.floor(Math.random() * 40),
+        };
+      });
+
+      // --------- State ----------
+      const INITIAL_SHOW = 3;
+      const LOAD_CHUNK = 20;
+
+      let renderedCount = 0;
+      let liked = false;
+
+      // --------- Elements ----------
+      const commentListEl = document.getElementById("commentList");
+      const viewMoreEl = document.getElementById("viewMore");
+      const commentCountEl = document.getElementById("commentCount");
+      const inputEl = document.getElementById("commentInput");
+      const sendBtn = document.getElementById("sendBtn");
+      const focusCommentBtn = document.getElementById("focusCommentBtn");
+      const likeBtn = document.getElementById("likeBtn");
+
+      // --------- Rendering helpers ----------
+      function renderOneComment(c, { prepend = false } = {}) {
+        const wrap = document.createElement("div");
+        wrap.className = "c";
+        wrap.dataset.id = c.id;
+
+        wrap.innerHTML = `
+      <div class="c__avatar" aria-hidden="true"></div>
+      <div style="flex:1; min-width:0;">
+        <div class="c__bubble">
+          <div class="c__name">${escapeHtml(c.name)}</div>
+          <div class="c__text">${escapeHtml(c.text)}</div>
+        </div>
+        <div class="c__meta">
+          <span>${c.time}</span>
+          <span>Like</span>
+          <span>Reply</span>
+          <span>${c.likes} likes</span>
+        </div>
+      </div>
+    `;
+
+        if (prepend) commentListEl.prepend(wrap);
+        else commentListEl.appendChild(wrap);
+      }
+
+      function updateCounts() {
+        commentCountEl.textContent = ALL_COMMENTS.length;
+      }
+
+      function updateViewMore() {
+        const remaining = ALL_COMMENTS.length - renderedCount;
+        if (remaining <= 0) {
+          viewMoreEl.classList.add("hidden");
+          return;
+        }
+        viewMoreEl.classList.remove("hidden");
+        const chunk = Math.min(LOAD_CHUNK, remaining);
+        viewMoreEl.textContent = `View ${chunk} more comments`;
+      }
+
+      function renderInitial() {
+        commentListEl.innerHTML = "";
+        renderedCount = 0;
+        loadMore(INITIAL_SHOW);
+        updateCounts();
+      }
+
+      function loadMore(n = LOAD_CHUNK) {
+        const remaining = ALL_COMMENTS.length - renderedCount;
+        const take = Math.min(n, remaining);
+        for (let i = 0; i < take; i++) {
+          const c = ALL_COMMENTS[renderedCount + i];
+          renderOneComment(c);
+        }
+        renderedCount += take;
+        updateViewMore();
+      }
+
+      // --------- Events ----------
+      viewMoreEl.addEventListener("click", () => {
+        loadMore(LOAD_CHUNK);
+      });
+
+      sendBtn.addEventListener("click", () => {
+        const val = inputEl.value.trim();
+        if (!val) return;
+
+        // Add new comment to the TOP (dynamic)
+        const newComment = {
+          id: ALL_COMMENTS.length + 1,
+          name: "You",
+          text: val,
+          time: "now",
+          likes: 0,
+        };
+
+        ALL_COMMENTS.unshift(newComment);
+
+        // If already rendered some comments, we also need to keep renderedCount consistent:
+        // We are inserting into the list at top, so renderedCount should also increase by 1.
+        renderOneComment(newComment, { prepend: true });
+        renderedCount += 1;
+
+        inputEl.value = "";
+        updateCounts();
+        updateViewMore();
+      });
+
+      inputEl.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          sendBtn.click();
+        }
+      });
+
+      focusCommentBtn.addEventListener("click", () => inputEl.focus());
+
+      likeBtn.addEventListener("click", () => {
+        liked = !liked;
+        likeBtn.style.color = liked ? "var(--blue)" : "var(--muted)";
+        likeBtn.style.background = liked ? "#e7f3ff" : "transparent";
+      });
+
+      // --------- Safety ----------
+      function escapeHtml(str) {
+        return str
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      // Init
+      renderInitial();
+    </script>
+  </body>
+</html>
