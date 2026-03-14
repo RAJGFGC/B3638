@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Vanilla DOM Example</title>
+    <style>
+      body {
+        font-family: Arial;
+        padding: 20px;
+      }
+      button {
+        padding: 6px 12px;
+        margin: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script>
+      let count = 0;
+
+      function render() {
+        const root = document.getElementById("root");
+
+        // ⚠️ Rebuilding entire UI
+        root.innerHTML = `
+        <h1>Vanilla JS Counter</h1>
+        <h2>${count}</h2>
+        <button onclick="increment()">+1</button>
+        <button onclick="decrement()">-1</button>
+        <ul>
+          ${Array.from({ length: 5 }, (_, i) => `<li>Item ${i}</li>`).join("")}
+        </ul>
+      `;
+      }
+
+      function increment() {
+        count++;
+        render();
+      }
+
+      function decrement() {
+        count--;
+        render();
+      }
+
+      render();
+    </script>
+  </body>
+</html>

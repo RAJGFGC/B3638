@@ -1,5 +1,7 @@
 
 import Lists from "./Lists.jsx"
+import Search from "./Search.jsx"
+import VD from "./VD.jsx"
 
 
 function App() {
@@ -24,15 +26,14 @@ function App() {
   ]
 
   return (
-    <div>
-      <h1>My Hacker Stories</h1>
+    <div><VD />
+      {/* <h1>My Hacker Stories</h1>
 
-      <label htmlFor="search">Search:</label>
-      <input id="search" type="text" />
 
+      <Search />
       <hr />
-      <Lists list={list} />
-
+      <Lists list={list} name="Manikandan Anbalagn" topics={["React", "Redux"]} /> */}
+      {/* lists = { list: list, name: "Manikandan Anbalagn", topics: ["React", "Redux"] }*/}
     </div>
   )
 }
