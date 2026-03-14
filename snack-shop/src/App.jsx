@@ -60,6 +60,7 @@ function App() {
               name="Tea"
               price={teaPrice}
               count={teaCount}
+              image="../public/tea.png"
               onAdd={handleAddItem}
               onRemove={handleRemoveItem}
             />
@@ -67,6 +68,7 @@ function App() {
               name="Coffee"
               price={coffeePrice}
               count={coffeeCount}
+              image="../public/coffee.png"
               onAdd={handleAddItem}
               onRemove={handleRemoveItem}
             />
@@ -74,6 +76,7 @@ function App() {
               name="Samosa"
               price={samosaPrice}
               count={samosaCount}
+              image="../public/samosa.jpg"
               onAdd={handleAddItem}
               onRemove={handleRemoveItem}
             />
