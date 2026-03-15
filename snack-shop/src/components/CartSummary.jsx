@@ -1,13 +1,15 @@
 import React from 'react'
 
 function CartSummary(props) {
-    const { teaCount, coffeeCount, samosaCount, totalItems, totalAmount } = props;
+    const { teaCount, coffeeCount, samosaCount, vadaCount, cakeCount, totalItems, totalAmount } = props;
     return (
         <div className='card summary-card'>
             <h2>Order Summary</h2>
             <p>Tea: {teaCount}</p>
             <p>Coffee: {coffeeCount}</p>
             <p>Samosa: {samosaCount}</p>
+            <p>Vada: {vadaCount}</p>
+            <p>Cake: {cakeCount}</p>
 
             <hr />
             <p>
