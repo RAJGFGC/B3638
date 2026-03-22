@@ -4,6 +4,7 @@ import './App.css'
 import Header from './components/Header';
 import ProductCard from './components/ProductCard';
 import ProductModal from './components/ProductModal';
+import axios from "axios";
 
 function App() {
 
@@ -15,9 +16,8 @@ function App() {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const response = await fetch('https://fakestoreapi.com/products');
-        const data = await response.json();
-        setProducts(data);
+        const response = await axios('https://fakestoreapi.com/products');
+        setProducts(response.data);
       } catch (error) {
         console.error('Error fetching products:', error);
       } finally {
