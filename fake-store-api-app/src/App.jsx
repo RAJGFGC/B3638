@@ -1,17 +1,19 @@
 
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import './App.css'
 import Header from './components/Header';
 import ProductCard from './components/ProductCard';
 import ProductModal from './components/ProductModal';
 import axios from "axios";
+import { CartContext } from './CartContext';
 
 function App() {
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [cart, setCart] = useState([]);
+  // const [cart, setCart] = useState([]);
+  const { cart, setCart } = useContext(CartContext);
 
   useEffect(() => {
     async function fetchProducts() {
@@ -42,7 +44,7 @@ function App() {
 
   return (
     <div className='app'>
-      <Header cartCount={cart.length} />
+      <Header cartCount={cart.length} cart={cart} />
 
       <h1 className='title'>Fake Store Shopping App</h1>
 
